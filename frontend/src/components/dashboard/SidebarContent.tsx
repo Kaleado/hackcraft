@@ -2,6 +2,7 @@ import * as React from "react";
 
 interface ISidebarContentProps {
     logout: () => void;
+    changeRankedStatus: (b: boolean) => void;
 };
 
 interface ISidebarContentState {
@@ -24,7 +25,10 @@ export class SidebarContent extends React.Component<ISidebarContentProps, ISideb
         }
 
         return <button type="button" className={c}
-            onClick={() => this.setState({ isRanked: true })}
+            onClick={() => {
+                this.props.changeRankedStatus(true);
+                this.setState({ isRanked: true });
+            }}
         >Ranked</button>
     }
 
@@ -35,7 +39,10 @@ export class SidebarContent extends React.Component<ISidebarContentProps, ISideb
         }
 
         return <button type="button" className={c}
-            onClick={() => this.setState({ isRanked: false })}
+            onClick={() => {
+                this.props.changeRankedStatus(false);
+                this.setState({ isRanked: false });
+            }}
         >Unranked</button>
     }
 
@@ -43,7 +50,7 @@ export class SidebarContent extends React.Component<ISidebarContentProps, ISideb
         return <div id="sidepanel">
             <h1>HackCraft</h1>
             <div className="sidebar-wrapper">
-                <div className="rank-button-group">
+                <div className="rank-button-group squashed-buttons">
                     {this.rankedButton()}
                     {this.unrankedButton()}
                 </div>

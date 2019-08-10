@@ -4,6 +4,7 @@ export const serverPort = 8080;
 const ServerURL: string = `${serverUrl}:${serverPort}`;
 export const LoginURL: string = `${ServerURL}/user/login`;
 export const ChallengeUrl: string = `${ServerURL}/matchmaking/challenge`;
+export const FindMatchURL: string = `${ServerURL}/matchmaking/start`;
 
 export function hasKeys(obj: any, keys: string[]): boolean {
     return !keys.some((k: string) => {
@@ -13,7 +14,7 @@ export function hasKeys(obj: any, keys: string[]): boolean {
 
 export type Language = "python3" | "c++";
 
-export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";;
+export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
 
 export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 

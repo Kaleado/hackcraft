@@ -1,7 +1,7 @@
 import * as React from "react";
 
 interface IDashboardContentAreaProps {
-    gameStart: (matchId: number) => void;
+    gameStart: () => void;
 }
 
 interface IDashboardContentAreaState{
@@ -12,13 +12,9 @@ export class DashboardContentArea extends React.Component<IDashboardContentAreaP
         super(props);
     }
 
-    startGame = () => {
-        this.props.gameStart(1);
-    }
-
     render(){
         return <div className="dashboard-content">
-            <button onClick={this.startGame}>Find match</button>
+            <button onClick={this.props.gameStart}>Find match</button>
         </div>;
     }
 }
