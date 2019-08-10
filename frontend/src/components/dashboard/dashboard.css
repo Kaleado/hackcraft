@@ -76,18 +76,64 @@
 }
 
 .dashboard-content-wrapper {
-    margin-top: 100px;
+    margin-top: 200px;
+    width: 80%;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
+}
+
+.find-match-wrapper {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10em;
 }
 
 .find-match-button {
     height: 60px;
-    width: 200px;
+    width: 300px;
 }
 
 .stats-panel {
     background-color: white;
-    height: 600px;
-    width: 500px;
+    height: 400px;
+    width: 1000px;
+    padding: 3em;
+}
+
+.history-text {
+    text-align: center;
+    margin-top: 1em;
+}
+
+.test-progress-bar {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background: white;
+    padding: 1em;
+}
+
+.stdout-output {
+    background-color: white;
+    margin-bottom: 1em;
+    height: 150px;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    color: black;
+    overflow: scroll;
+    overflow-x: wrap;
+}
+
+.stderr-output {
+    background-color: white;
+    margin-bottom: 1em;
+    height: 150px;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    color: black;
+    overflow-y: scroll;
+    overflow-x: wrap;
+}
+
+code {
+    color: white !important;
 }

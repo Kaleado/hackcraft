@@ -1,14 +1,18 @@
 import * as React from "react";
 import { GameSidePanel } from "./GameSidePanel";
 import MonacoEditor from "react-monaco-editor";
+import * as Globals from "../../../../shared/index";
+import { Modal, Button } from "react-bootstrap";
 
 interface IGameProps {
     matchId: number;
+    userId: number;
     exitMatch: () => void;
 };
 
 interface IGameState {
     code: string;
+    hasWon: boolean;
 };
 
 export class Game extends React.Component<IGameProps, IGameState> {
@@ -17,7 +21,8 @@ export class Game extends React.Component<IGameProps, IGameState> {
         super(props);
 
         this.state = {
-            code: "Loading..."
+            code: "# Loading...",
+            hasWon: false
         };
     }
 
@@ -31,8 +36,29 @@ export class Game extends React.Component<IGameProps, IGameState> {
         editor.focus();
     }
 
-    runTests = () => {
-        return "We did it reddit!";
+    runTests = (callback) => {
+        const body: Globals.MakeSubmissionRequest = {
+            userId: this.props.userId,
+            matchId: this.props.matchId,
+            submittedCode: this.state.code,
+            submittedLanguage: "python3"
+        };
+
+        fetch(Globals.MakeSubmissionURL, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(d => d.json())
+            .then((data: Globals.MakeSubmissionResponse) => {
+                if (data.testsFailed === 0) {
+                    this.setState({ hasWon: true });
+                }
+                callback(data);
+            })
+
     };
 
     starterCode = newCode => {
@@ -48,7 +74,7 @@ export class Game extends React.Component<IGameProps, IGameState> {
         const remainingWidth = window.innerWidth - 600;
 
         return <div className="dashboard-wrapper">
-            <GameSidePanel 
+            <GameSidePanel
                 starterCode={this.starterCode}
                 exitMatch={this.props.exitMatch}
                 matchId={this.props.matchId}
@@ -64,6 +90,16 @@ export class Game extends React.Component<IGameProps, IGameState> {
                 onChange={this.onChange}
                 editorDidMount={this.editorDidMount}
             />
+            {this.state.hasWon &&
+                <Modal.Dialog>
+                    <Modal.Body>
+                        <h1>You win!</h1>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.props.exitMatch}>Leave Game</Button>
+                    </Modal.Footer>
+                </Modal.Dialog>
+            }
 
         </div>;
     }

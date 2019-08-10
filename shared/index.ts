@@ -1,10 +1,11 @@
-export const serverUrl  = "http://157.230.36.48"; // 157.230.36.48
+export const serverUrl  = "http://localhost"; //"http://157.230.36.48";
 export const serverPort = 8080;
 
 const ServerURL: string = `${serverUrl}:${serverPort}`;
 export const LoginURL: string = `${ServerURL}/user/login`;
 export const ChallengeUrl: string = `${ServerURL}/matchmaking/challenge`;
 export const FindMatchURL: string = `${ServerURL}/matchmaking/start`;
+export const MakeSubmissionURL: string = `${ServerURL}/submission/make`;
 
 export function hasKeys(obj: any, keys: string[]): boolean {
     return !keys.some((k: string) => {
