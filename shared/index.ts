@@ -1,5 +1,5 @@
 const serverUrl  = "TODO";
-const serverPort = "TODO";
+const serverPort = 8080;
 
 const frontendPort = "TODO";
 

@@ -1,5 +1,5 @@
 import express from "express";
-import mockLogin from "mockLogin";
+import { mockLogin } from "./mockLogin";
 
 // A constant port number to serve our website on
 const PORT = 8080;
