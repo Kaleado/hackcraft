@@ -75,7 +75,7 @@ export type StartMatchmakingRequest = {
 };
 
 export type StartMatchmakingResponse = {
-    matchId: number // Identifies the game that you've just made.
+    matchId: number, // Identifies the game that you've just made.
 };
 
 export type MatchStatusRequest = {
@@ -86,7 +86,19 @@ export type MatchStatusResponse = Match;
 
 export type GetChallengeRequest = {
     matchId: number,
-    language: Language
+    language: Language,
 };
 
 export type GetChallengeResponse = Challenge;
+
+export type SubmissionRequest = {
+    userId: string,
+    matchId: number,
+    submittedCode: string,
+    submittedLanguage: Language,
+};
+
+export type SubmissionResponse = {
+    testsPassed: number,
+    testsTotal: number,
+};

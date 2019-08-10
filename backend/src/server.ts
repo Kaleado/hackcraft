@@ -2,6 +2,7 @@ import express from "express";
 import { signup, login } from "./user";
 import { startMatchmaking, getMatchStatus } from "./matchmaking";
 import { getChallenge } from "./challenge";
+import { makeSubmission } from "./submission";
 import Redis from "redis";
 import BodyParser from "body-parser";
 import Cors from "cors";
@@ -42,6 +43,10 @@ App.post("/matchmaking/status", async (req,res) => {
 
 App.post("/matchmaking/challenge", async (req,res) => {
   res.send(await getChallenge(req, res, dbClient));
+});
+
+App.post("/submission/make", async (req,res) => {
+  res.send(await makeSubmission(req, res, dbClient));
 });
 
 // This part should go last!
