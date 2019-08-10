@@ -1,13 +1,8 @@
 export const serverUrl  = "http://localhost";
 export const serverPort = 8080;
 
-let makeServerURL: (() => string) =  () => {
-    return `${serverUrl}:${serverPort}`;
-};
-
-export let LoginURL: (() => string) = () => {
-    return `${makeServerURL()}/user/login`;
-};
+const ServerURL: string = `${serverUrl}:${serverPort}`;
+export const LoginURL: string = `${ServerURL}/user/login`;
 
 export type ChallengeCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
 
