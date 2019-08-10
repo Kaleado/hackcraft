@@ -28,7 +28,7 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
         password: pw
     };
 
-    fetch(Globals.LoginURL(), {
+    fetch(Globals.LoginURL, {
       method: "POST",
       body: JSON.stringify(l),
     }).then(dat => dat.json())
@@ -36,7 +36,9 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
         this.setState({
           loggedIn: true,
           userId: data.userId
-        })
+        });
+        console.log(`User id: ${data.userId}`);
+
       }).catch(e => {
         console.error(e);
       });

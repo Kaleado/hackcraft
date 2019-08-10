@@ -2,6 +2,7 @@ import { SignupResponse, BackendError, User, LoginResponse } from '../../shared'
 import { addUser, updateNextAvailableId, getNextAvailableId, getUserByUsername, mapUsernameToId } from "./db";
 
 export async function signup(request, response, dbClient): Promise<SignupResponse | BackendError> {
+    console.log(request.body);
     if(request.body.username === undefined || request.body.password === undefined){
         return {
             reason: "Missing required parameters"

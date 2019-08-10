@@ -2,10 +2,17 @@ import * as React from "react";
 import "./dashboard.css";
 
 interface ISidePanelProps {
+    content: any;
 }
 
 interface ISidePanelState{
     isRanked: boolean;
+}
+
+export interface ISidePanelChildProps {
+    isRanked: boolean;
+    content: any;
+    sendMessage: (msg: string) => void;
 }
 
 export class SidePanel extends React.Component<ISidePanelProps, ISidePanelState> {
@@ -16,38 +23,11 @@ export class SidePanel extends React.Component<ISidePanelProps, ISidePanelState>
         };
     }
 
-    rankedButton() {
-        let c = "sidepanel-selector";
-        if (this.state.isRanked) {
-            c += " sidepanel-selector-selected";  
-        }
-
-        return <button type="button" className={c}
-            onClick={() => this.setState({ isRanked: true })}
-        >Ranked</button>
-    }
-
-    unrankedButton() {
-        let c = "sidepanel-selector";
-        if (!this.state.isRanked) {
-            c += " sidepanel-selector-selected";  
-        }
-
-        return <button type="button" className={c}
-            onClick={() => this.setState({ isRanked: false })}
-        >Unranked</button>
-    }
-
     render(){
+        let Content = this.props.content;
         return <div id="sidepanel">
             <h1>HackCraft</h1>
-            <div className="sidebar-wrapper">
-                <div className="rank-button-group">
-                    {this.rankedButton()}
-                    {this.unrankedButton()}
-                </div>
-                <button className="sidepanel-selector logout-button">Logout</button>
-            </div>
+            <Content isRanked={this.state.isRanked} content={this.props.content}></Content>
         </div>;
     }
 }
