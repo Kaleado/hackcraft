@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as globals from "../../../shared/globals";
+import * as Globals from "../../../shared/index";
 import "../style.css";
 import { LoginPanel } from "./login/LoginPanel";
 
@@ -7,7 +7,7 @@ export interface IAppRootProps { }
 
 interface IAppRootState {
   loggedIn: boolean;
-  userName?: string;
+  userId?: number;
 }
 
 // 'HelloProps' describes the shape of props.
@@ -21,17 +21,28 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
     };
   }
 
-  performLogin(un: string, pw: string) {
-    fetch()
+  performLogin = (un: string, pw: string) => {
+    fetch(Globals.makeServerURL())
+      .then(dat => dat.json())
+      .then((data: Globals.LoginResponse) => {
+        this.setState({
+          loggedIn: true,
+          userId: data.userId
+        })
+      }).catch(e => {
+        console.error(e);
+      });
   }
 
   render() {
     if (!this.state.loggedIn) {
       return <div className="login-panel-position">
-        <LoginPanel></LoginPanel>
+        <LoginPanel submitLogin={this.performLogin}></LoginPanel>
       </div>;
     }
 
-    return <div></div>
+    return <div>
+
+    </div>;
   }
 }

@@ -1,12 +1,14 @@
-const serverUrl  = "TODO";
-const serverPort = 8080;
+export const serverUrl  = "TODO";
+export const serverPort = 8080;
 
-const frontendPort = "TODO";
+export let makeServerURL: (() => string) =  () => {
+    return `${serverUrl}:${serverPort}`;
+};
 
 export type BackendError = {
     reason: String
 }
 
 export type LoginResponse = {
-    userId: Number
+    userId: number
 };
