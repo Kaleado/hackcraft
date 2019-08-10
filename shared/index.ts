@@ -28,7 +28,7 @@ export type Challenge = {
     name: string,
     description: string,
     numTests: number,
-    starterCode: {[key: string]: string}
+    starterCode: {[key: string]: string} // Here string should be a language
 };
 
 export type User = {

@@ -17,7 +17,7 @@ export class Game extends React.Component<IGameProps, IGameState> {
         super(props);
 
         this.state = {
-            code: "# Enter your code here..."
+            code: "Loading..."
         };
     }
 
@@ -35,6 +35,10 @@ export class Game extends React.Component<IGameProps, IGameState> {
         return "We did it reddit!";
     };
 
+    starterCode = newCode => {
+        this.setState({ code: newCode })
+    };
+
 
     render() {
         const options = {
@@ -44,7 +48,12 @@ export class Game extends React.Component<IGameProps, IGameState> {
         const remainingWidth = window.innerWidth - 600;
 
         return <div className="dashboard-wrapper">
-            <GameSidePanel exitMatch={this.props.exitMatch} matchId={this.props.matchId} runTests={this.runTests}></GameSidePanel>
+            <GameSidePanel 
+                starterCode={this.starterCode}
+                exitMatch={this.props.exitMatch}
+                matchId={this.props.matchId}
+                runTests={this.runTests}>
+            </GameSidePanel>
             <MonacoEditor
                 width={remainingWidth.toString()}
                 height={window.innerHeight.toString()}

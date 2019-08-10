@@ -7,6 +7,7 @@ interface IGameSidePanelProps {
     runTests: () => string;
     matchId: number;
     exitMatch: () => void;
+    starterCode: (code: string) => void;
 };
 
 interface IGameSidePanelState {
@@ -57,8 +58,8 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
             },
         }).then(d => d.json())
           .then((data: Globals.Challenge) => {
-              console.log(data);
               this.setState({ challenge: data });
+              this.props.starterCode(data.starterCode["python3"]);
         }).catch(e => console.log(e));
     };
 
@@ -78,7 +79,6 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                     {this.state.isOnTestPanel && this.testButton()}
                     {(!this.state.isOnTestPanel) && 
                         <div>
-                            <h1>{this.state.challenge && this.state.challenge.name}</h1>
                             <div dangerouslySetInnerHTML={{
                                 __html: this.state.challenge && marked(this.state.challenge.description, {sanatize: true})
                             }}></div>
