@@ -68,7 +68,8 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         return <div className="dashboard-wrapper">
             <Game
                 matchId={this.state.matchId}
-                exitMatch={this.exitMatch}>
+                exitMatch={this.exitMatch}
+                userId={this.props.userId}>
             </Game>
         </div>;
 

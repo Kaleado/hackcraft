@@ -6,7 +6,7 @@ import { ProgressBar } from 'react-bootstrap';
 
 
 interface IGameSidePanelProps {
-    runTests: () => string;
+    runTests: (callback: (data: Globals.MakeSubmissionResponse) => void) => void;
     matchId: number;
     exitMatch: () => void;
     starterCode: (code: string) => void;
@@ -18,6 +18,8 @@ interface IGameSidePanelState {
     challenge: Globals.Challenge | null;
     currentNumberTestsPassed: number;
     totalNumberTests: number;
+    stderr: string;
+    stdout: string;
 };
 
 export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSidePanelState> {
@@ -30,6 +32,8 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
             challenge: null,
             currentNumberTestsPassed: 0,
             totalNumberTests: 1, // To be updated by API call
+            stderr: "",
+            stdout: ""
         };
 
         this.getChallengeMd();
@@ -48,8 +52,14 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                     awaitingTestResults: true
                 });
 
-                let testResults = this.props.runTests();
-                console.log(testResults);
+                this.props.runTests(data => {
+                    this.setState({
+                        currentNumberTestsPassed: data.testsFailed,
+                        totalNumberTests: data.testsTotal,
+                        stderr: data.stderr,
+                        stdout: data.stdout
+                    });
+                });
             }}
         >Run Tests</button>
     }
@@ -97,9 +107,9 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                                 />
                             </div>
                             <h3 style={{ color: "green" }}>Last Test Stdout:</h3>
-                            <div className="card stdout-output"></div>
+                            <div className="card stdout-output">{this.state.stdout}</div>
                             <h3 style={{ color: "red" }}>Last Test Stderr:</h3>
-                            <div className="card stderr-output"></div>
+                            <div className="card stderr-output">{this.state.stderr}</div>
                         </div>
                     }
                     {(!this.state.isOnTestPanel) && 
@@ -109,6 +119,7 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                             }}></div>
                         </div>
                     }
+
                 </div>
                 <button className="sidepanel-selector surrender-button" onClick={this.props.exitMatch}>Surrender</button>
             </div>
