@@ -15,6 +15,8 @@ interface IDashboardState{
     matchId: number;
 }
 
+const POLL_INTERVAL = 1000;
+
 export class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     constructor(props) {
         super(props);
@@ -26,12 +28,28 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         };
     }
 
+    pollForStatusChanges = () => {
+        fetch(`${Globals.serverUrl}:${Globals.serverPort}${Globals.PATH_MATCH_STATUS}`, {
+            method: "POST",
+            body: JSON.stringify({matchId: this.state.matchId}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(d1 => d1.json())
+        .then((status: Globals.MatchStatusResponse) => {
+            if(status.matchStatus == "SEARCHING") setTimeout(this.pollForStatusChanges, POLL_INTERVAL);
+            if(status.matchStatus == "STARTED") this.setState({
+                inGame: true
+            });
+        });
+    };
+
     startGame = () => {
         let body: Globals.StartMatchmakingRequest = {
             userId: this.props.userId,
             isRanked: this.state.isRanked,
-            maxPlayers: 1,
-            matchCategory: "FREE"
+            maxPlayers: 2,
+            matchCategory: "FREE",
         };
 
         fetch(Globals.FindMatchURL, {
@@ -45,8 +63,9 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         .then((data: Globals.StartMatchmakingResponse) => {
             console.log(data);
             this.setState({
-                inGame: true,
                 matchId: data.matchId
+            }, () => {
+                setTimeout(this.pollForStatusChanges, POLL_INTERVAL);
             });
         });
 
