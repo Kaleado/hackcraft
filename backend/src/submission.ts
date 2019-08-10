@@ -75,6 +75,9 @@ export async function makeSubmission(req, res, dbClient: RedisClient): Promise<M
         };
 
         match.submissions.push(s);
+        if(s.testsFailed == 0){ // We won
+            match.matchStatus = "ENDED";
+        }
         addMatch(dbClient, match);
         return s;
 
