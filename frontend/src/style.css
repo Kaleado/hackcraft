@@ -1,3 +1,7 @@
 #main {
-    text-align: center;
+}
+
+.login-panel-position {
+    margin: 0 auto;
+    margin-top: 300px;
 }
