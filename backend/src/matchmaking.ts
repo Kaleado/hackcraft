@@ -6,7 +6,8 @@ import {
     MatchStatusResponse,
     MatchStatusRequest,
     hasKeys,
-    ChallengeId
+    ChallengeId,
+    missingKeys
 } from "../../shared";
 import { RedisClient } from "redis";
 import { getNextAvailableMatchId, updateNextAvailableMatchId, addMatch, getAllMatches, getMatchById, mapMatchIdToChallengeId } from "./db";
@@ -25,21 +26,22 @@ async function joinMatch(userId: number, match: Match, dbClient: RedisClient): P
 }
 
 export async function startMatchmaking(req, res, dbClient: RedisClient) : Promise<StartMatchmakingResponse | BackendError> {
-    let reqBody: StartMatchmakingRequest = req.body;
-    if(!hasKeys(reqBody, ["userId", "matchCategory", "maxPlayers", "isRanked"])){
+    let body: StartMatchmakingRequest = req.body;
+    const missing: string[] = missingKeys(body, ["userId", "matchCategory", "maxPlayers", "isRanked"]);
+    if(missing.length > 0){
         return {
-            reason: "Missing required parameters"
+            reason: "Missing required parameters: " + missing.toString()
         };
     }
     //Add ourselves to a match that exists that meets our criteria.
     let matches: Match[] = await getAllMatches(dbClient);
     let joinableMatch: Match | undefined = matches.find((m: Match) => {
-        return m.matchCategory == reqBody.matchCategory &&
+        return m.matchCategory == body.matchCategory &&
                m.playerIds.length < m.maxPlayers &&
-               m.isRanked == reqBody.isRanked;
+               m.isRanked == body.isRanked;
     });
     if(joinableMatch !== undefined){
-        joinMatch(reqBody.userId, joinableMatch, dbClient);
+        joinMatch(body.userId, joinableMatch, dbClient);
         return {
             matchId: joinableMatch.matchId
         };
@@ -49,15 +51,16 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
     let matchId: number = await getNextAvailableMatchId(dbClient);
     let match: Match = {
         matchId: matchId,
-        maxPlayers: reqBody.maxPlayers,
+        maxPlayers: body.maxPlayers,
         playerIds: [ ],
-        isRanked: reqBody.isRanked,
+        submissions: [ ],
+        isRanked: body.isRanked,
         matchStatus: "SEARCHING",
-        matchCategory: reqBody.matchCategory,
+        matchCategory: body.matchCategory,
     };
     updateNextAvailableMatchId(dbClient);
     addMatch(dbClient, match);
-    joinMatch(reqBody.userId, match, dbClient);
+    joinMatch(body.userId, match, dbClient);
     console.log("Created new match with matchId ", matchId);
     return { 
         matchId: matchId
@@ -65,13 +68,14 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
 }
 
 export async function getMatchStatus(req, res, dbClient: RedisClient) : Promise<MatchStatusResponse | BackendError> {
-    let reqBody: MatchStatusRequest = req.body;
-    if(!hasKeys(reqBody, ["matchId"])) {
+    let body: MatchStatusRequest = req.body;
+    const missing: string[] = missingKeys(body, ["matchId"]);
+    if(missing.length > 0){
         return {
-            reason: "Missing required parameters"
+            reason: "Missing required parameters: " + missing.toString()
         };
     }
-    let match: Match | undefined = await getMatchById(dbClient, reqBody.matchId);
+    let match: Match | undefined = await getMatchById(dbClient, body.matchId);
     if(match !== undefined) return match;
-    else return { reason: "Match with id " + reqBody.matchId + " does not exist" };
+    else return { reason: "Match with id " + body.matchId + " does not exist" };
 }

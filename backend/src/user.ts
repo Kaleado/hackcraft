@@ -1,16 +1,18 @@
-import { SignupResponse, BackendError, User, LoginResponse, hasKeys } from '../../shared';
+import { SignupResponse, BackendError, User, LoginResponse, hasKeys, missingKeys } from '../../shared';
 import { addUser, updateNextAvailableId, getNextAvailableId, getUserByUsername, mapUsernameToId } from "./db";
 
-export async function signup(request, response, dbClient): Promise<SignupResponse | BackendError> {
-    if(!hasKeys(request.body, ["username", "password"])){
+export async function signup(req, res, dbClient): Promise<SignupResponse | BackendError> {
+    let body = req.body;
+    const missing: string[] = missingKeys(body, ["username", "password"]);
+    if(missing.length > 0){
         return {
-            reason: "Missing required parameters"
+            reason: "Missing required parameters: " + missing.toString()
         };
     }
     let newUser: User = {
         userId: await getNextAvailableId(dbClient),
-        username: request.body.username,
-        password: request.body.password,
+        username: req.body.username,
+        password: req.body.password,
     };
     updateNextAvailableId(dbClient);
     addUser(dbClient, newUser);
@@ -20,13 +22,15 @@ export async function signup(request, response, dbClient): Promise<SignupRespons
     };
 }
 
-export async function login(request, response, dbClient): Promise<LoginResponse | BackendError> {
-    if(!hasKeys(request.body, ["username", "password"])){
+export async function login(req, res, dbClient): Promise<LoginResponse | BackendError> {
+    let body = req.body;
+    const missing: string[] = missingKeys(body, ["username", "password"]);
+    if(missing.length > 0){
         return {
-            reason: "Missing required parameters"
+            reason: "Missing required parameters: " + missing.toString()
         };
     }
-    let user: User = await getUserByUsername(dbClient, request.body.username);
+    let user: User = await getUserByUsername(dbClient, req.body.username);
     return {
         userId: user.userId
     };

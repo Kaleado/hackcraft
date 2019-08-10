@@ -144,5 +144,3 @@ export async function mapMatchIdToChallengeId(dbClient: RedisClient, matchId: nu
 export async function getChallengeIdFromMatchId(dbClient: RedisClient, matchId: number): Promise<ChallengeId> {
     return getAsync(dbClient, "challengeForMatch_" + matchId.toString());
 }
-
-///////////////////// CHALLENGE
