@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Globals from "../../../shared/index";
 import "../style.css";
 import { LoginPanel } from "./login/LoginPanel";
+import { Dashboard } from "./dashboard/Dashboard";
 
 export interface IAppRootProps { }
 
@@ -41,8 +42,6 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
       </div>;
     }
 
-    return <div>
-
-    </div>;
+    return <Dashboard></Dashboard>;
   }
 }

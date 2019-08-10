@@ -23,7 +23,7 @@ export class LoginPanel extends React.Component<ILoginPanelProps, ILoginPanelSta
         });
     }
 
-    login= () => {
+    login = () => {
         this.props.submitLogin(this.state.username, this.state.password);
     }
 
@@ -37,14 +37,16 @@ export class LoginPanel extends React.Component<ILoginPanelProps, ILoginPanelSta
                     />
                 </div>
                 <div className="form-group">
-                    <input type="password" className="form-control" placeholder="Password" id="password-input" 
+                    <input type="password" className="form-control" placeholder="Password" id="password-input"
                         onChange={this.changePassword}
                     />
                 </div>
 
-                <button type="button" className="btn btn-dark loginButton"
-                    onClick={this.login}
-                >Login</button>
+                <div className="login-button">
+                    <button type="button" className="btn btn-dark login-button-inner"
+                        onClick={this.login}
+                    >Login</button>
+                </div>
             </div>
         </div>;
     }

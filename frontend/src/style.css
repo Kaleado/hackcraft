@@ -2,6 +2,7 @@
 }
 
 .login-panel-position {
-    margin: 0 auto;
-    margin-top: 300px;
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
 }
