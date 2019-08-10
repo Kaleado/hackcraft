@@ -1,6 +1,6 @@
 import express from "express";
 import { signup, login } from "./user";
-import { startMatchmaking } from "./matchmaking";
+import { startMatchmaking, getMatchStatus } from "./matchmaking";
 import Redis from "redis";
 import BodyParser from "body-parser";
 import Cors from "cors";
@@ -36,6 +36,10 @@ App.post("/user/signup", async (req,res) => {
 
 App.post("/matchmaking/start", async (req,res) => {
   res.send(await startMatchmaking(req, res, dbClient));
+});
+
+App.post("/matchmaking/status", async (req,res) => {
+  res.send(await getMatchStatus(req, res, dbClient));
 });
 
 // This part should go last!

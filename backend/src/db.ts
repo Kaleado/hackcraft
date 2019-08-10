@@ -2,26 +2,20 @@ import { User, Match } from "../../shared";
 import { promisify } from "util";
 import { RedisClient } from "redis";
 
-// function get(key, cb) {
-//     this.get(key, (resp, err) => {
-//         cb(err, resp);
-//     });
-// }
-
-// function set(key, value, cb) {
-//     this.get(key, value, (resp, err) => {
-//         cb(err, resp);
-//     });
-// }
-
 async function getAsync(dbClient: RedisClient, key: string): Promise<string | null> {
-    // return promisify(get).bind(dbClient)(key);
     return promisify(dbClient.get).bind(dbClient)(key);
 }
 
+async function mgetAsync(dbClient: RedisClient, keys: string[]): Promise<string[] | null> {
+    return promisify(dbClient.mget).bind(dbClient)(keys);
+}
+
 async function setAsync(dbClient: RedisClient, key: string, value: string): Promise<void> {
-    // return promisify(set).bind(dbClient)(key, value);
     return promisify(dbClient.set).bind(dbClient)(key, value);
+}
+
+async function keysAsync(dbClient: RedisClient, pattern: string): Promise<string[] | null> {
+    return promisify(dbClient.keys).bind(dbClient)(pattern);
 }
 
 ///////////////////// USER IDS
@@ -122,10 +116,23 @@ export async function updateNextAvailableMatchId(dbClient: RedisClient): Promise
 ///////////////////// MATCH
 
 export async function getMatchById(dbClient: RedisClient, matchId: number): Promise<Match> {
-    let match: Match = JSON.parse(await getAsync(dbClient, "match_" + matchId.toString()));
+    let rawString: string | null = await getAsync(dbClient, "match_" + matchId.toString());
+    if(rawString === null) return undefined;
+    let match: Match = JSON.parse(rawString);
     return match;
 }
 
 export async function addMatch(dbClient: RedisClient, match: Match): Promise<void> {
     setAsync(dbClient, "match_" + match.matchId.toString(), JSON.stringify(match));
+}
+
+export async function getAllMatches(dbClient: RedisClient): Promise<Match[]> {
+    let keys: string[] = await keysAsync(dbClient, "match_*");
+    if(keys.length == 0){
+        return [];
+    }
+    let matches: Match[] = (await mgetAsync(dbClient, keys)).map(
+        (str: string) => JSON.parse(str)
+    );
+    return matches;
 }
