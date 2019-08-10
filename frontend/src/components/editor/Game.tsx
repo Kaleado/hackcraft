@@ -112,7 +112,7 @@ export class Game extends React.Component<IGameProps, IGameState> {
                 editorDidMount={this.editorDidMount}
             />
             {this.state.hasWon &&
-                <Modal.Dialog>
+                <Modal.Dialog className="end-game-modal">
                     <Modal.Body>
                         <h1>You win!</h1>
                     </Modal.Body>
@@ -121,8 +121,8 @@ export class Game extends React.Component<IGameProps, IGameState> {
                     </Modal.Footer>
                 </Modal.Dialog>
             }
-            {this.state.matchStatus == "ENDED" &&
-                <Modal.Dialog>
+            {(!this.state.hasWon) && this.state.matchStatus == "ENDED" &&
+                <Modal.Dialog className="end-game-modal">
                     <Modal.Body>
                         <h1>You lose!</h1>
                     </Modal.Body>

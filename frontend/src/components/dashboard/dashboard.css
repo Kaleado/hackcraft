@@ -134,6 +134,13 @@
     overflow-x: wrap;
 }
 
+.end-game-modal {
+    position: fixed;
+    top: 40vh;
+    left: 45%;
+    width: 400px;
+}
+
 code {
     color: white !important;
 }
