@@ -9,6 +9,22 @@ export type BackendError = {
     reason: string,
 };
 
+export type User = {
+    userId: number,
+    username: string,
+    password: string,
+};
+
+export type PublicUser = {
+    userId: number,
+    username: string,
+};
+
+export type Match = {
+    matchId: number,
+    playerIds: number[],
+};
+
 export type LoginRequest = {
     username: string,
     password: string,
@@ -25,17 +41,6 @@ export type SignupRequest = {
 
 export type SignupResponse = {
     userId: number,
-};
-
-export type User = {
-    userId: number,
-    username: string,
-    password: string,
-};
-
-export type PublicUser = {
-    userId: number,
-    username: string,
 };
 
 export type StartMatchmakingRequest = {
