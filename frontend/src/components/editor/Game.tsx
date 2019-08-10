@@ -3,6 +3,7 @@ import { GameSidePanel } from "./GameSidePanel";
 import MonacoEditor from "react-monaco-editor";
 import * as Globals from "../../../../shared/index";
 import { Modal, Button } from "react-bootstrap";
+import { MatchStatus } from "../../../../shared";
 
 interface IGameProps {
     matchId: number;
@@ -13,7 +14,10 @@ interface IGameProps {
 interface IGameState {
     code: string;
     hasWon: boolean;
+    matchStatus: MatchStatus;
 };
+
+const POLL_INTERVAL = 1000;
 
 export class Game extends React.Component<IGameProps, IGameState> {
 
@@ -22,8 +26,10 @@ export class Game extends React.Component<IGameProps, IGameState> {
 
         this.state = {
             code: "# Loading...",
-            hasWon: false
+            hasWon: false,
+            matchStatus: "STARTED"
         };
+        setTimeout(this.pollForStatusChanges, 1000);
     }
 
     onChange = (newValue, e) => {
@@ -51,13 +57,13 @@ export class Game extends React.Component<IGameProps, IGameState> {
                 'Content-Type': 'application/json',
             }
         })
-            .then(d => d.json())
-            .then((data: Globals.MakeSubmissionResponse) => {
-                if (data.testsFailed === 0) {
-                    this.setState({ hasWon: true });
-                }
-                callback(data);
-            })
+        .then(d => d.json())
+        .then((data: Globals.MakeSubmissionResponse) => {
+            if (data.testsFailed === 0) {
+                this.setState({ hasWon: true });
+            }
+            callback(data);
+        })
 
     };
 
@@ -65,6 +71,21 @@ export class Game extends React.Component<IGameProps, IGameState> {
         this.setState({ code: newCode })
     };
 
+    pollForStatusChanges = () => {
+        fetch(`${Globals.serverUrl}:${Globals.serverPort}${Globals.PATH_MATCH_STATUS}`, {
+            method: "POST",
+            body: JSON.stringify({matchId: this.props.matchId}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(d1 => d1.json())
+        .then((status: Globals.MatchStatusResponse) => {
+            if(status.matchStatus == "ENDED") this.setState({
+                matchStatus: "ENDED"
+            });
+            else setTimeout(this.pollForStatusChanges, POLL_INTERVAL);
+        });
+    };
 
     render() {
         const options = {
@@ -94,6 +115,16 @@ export class Game extends React.Component<IGameProps, IGameState> {
                 <Modal.Dialog>
                     <Modal.Body>
                         <h1>You win!</h1>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.props.exitMatch}>Leave Game</Button>
+                    </Modal.Footer>
+                </Modal.Dialog>
+            }
+            {this.state.matchStatus == "ENDED" &&
+                <Modal.Dialog>
+                    <Modal.Body>
+                        <h1>You lose!</h1>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.exitMatch}>Leave Game</Button>
