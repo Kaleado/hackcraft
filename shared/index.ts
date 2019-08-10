@@ -1,7 +1,8 @@
-const serverUrl  = "TODO";
-const serverPort = 8080;
+export const serverUrl  = "http://localhost";
+export const serverPort = 8080;
 
-const frontendPort = "TODO";
+const ServerURL: string = `${serverUrl}:${serverPort}`;
+export const LoginURL: string = `${ServerURL}/user/login`;
 
 export function hasKeys(obj: any, keys: string[]): boolean {
     return keys.some((k: string) => {
