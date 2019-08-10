@@ -29,6 +29,7 @@ export class Game extends React.Component<IGameProps, IGameState> {
             hasWon: false,
             matchStatus: "STARTED"
         };
+        setTimeout(this.pollForStatusChanges, 1000);
     }
 
     onChange = (newValue, e) => {
@@ -56,13 +57,13 @@ export class Game extends React.Component<IGameProps, IGameState> {
                 'Content-Type': 'application/json',
             }
         })
-            .then(d => d.json())
-            .then((data: Globals.MakeSubmissionResponse) => {
-                if (data.testsFailed === 0) {
-                    this.setState({ hasWon: true });
-                }
-                callback(data);
-            })
+        .then(d => d.json())
+        .then((data: Globals.MakeSubmissionResponse) => {
+            if (data.testsFailed === 0) {
+                this.setState({ hasWon: true });
+            }
+            callback(data);
+        })
 
     };
 
@@ -114,6 +115,16 @@ export class Game extends React.Component<IGameProps, IGameState> {
                 <Modal.Dialog>
                     <Modal.Body>
                         <h1>You win!</h1>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.props.exitMatch}>Leave Game</Button>
+                    </Modal.Footer>
+                </Modal.Dialog>
+            }
+            {this.state.matchStatus == "ENDED" &&
+                <Modal.Dialog>
+                    <Modal.Body>
+                        <h1>You lose!</h1>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.exitMatch}>Leave Game</Button>

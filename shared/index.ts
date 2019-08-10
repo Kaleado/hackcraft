@@ -1,4 +1,4 @@
-export const serverUrl  = "http://localhost"; //"http://157.230.36.48";
+export const serverUrl  = "http://157.230.36.48"; //"http://157.230.36.48";
 export const serverPort = 8080;
 
 const ServerURL: string = `${serverUrl}:${serverPort}`;
