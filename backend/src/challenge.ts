@@ -44,17 +44,22 @@ export async function getChallenge(req, res, dbClient: RedisClient) : Promise<Ch
     if(!hasKeys(body, ["language", "matchId"])){
         return { reason: "Missing required parameters" };
     }
-    let challengeIdForMatch: ChallengeId = await getChallengeIdFromMatchId(dbClient, body.matchId);
-    let meta: ChallengeMeta = readMeta(metaPath(challengeIdForMatch));
-    let starterCode: string = readStarterCode(challengeIdForMatch, body.language);
-    let description: string = readDescriptionFile(challengeIdForMatch);
-    let starterCodeObj = {};
-    starterCodeObj[body.language] = starterCode;
+    try {
+        let challengeIdForMatch: ChallengeId = await getChallengeIdFromMatchId(dbClient, body.matchId);
+        let meta: ChallengeMeta = readMeta(metaPath(challengeIdForMatch));
+        let starterCode: string = readStarterCode(challengeIdForMatch, body.language);
+        let description: string = readDescriptionFile(challengeIdForMatch);
+        let starterCodeObj = {};
+        starterCodeObj[body.language] = starterCode;
 
-    return {
-        name: meta.name,
-        description: description,
-        numTests: 3,
-        starterCode: starterCodeObj
-    };
+        return {
+            name: meta.name,
+            description: description,
+            numTests: 3,
+            starterCode: starterCodeObj
+        };
+    }
+    catch(exc) {
+        return { reason: exc };
+    }
 }
