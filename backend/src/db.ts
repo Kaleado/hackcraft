@@ -1,4 +1,4 @@
-import { User, Match } from "../../shared";
+import { User, Match, ChallengeId } from "../../shared";
 import { promisify } from "util";
 import { RedisClient } from "redis";
 
@@ -136,3 +136,13 @@ export async function getAllMatches(dbClient: RedisClient): Promise<Match[]> {
     );
     return matches;
 }
+
+export async function mapMatchIdToChallengeId(dbClient: RedisClient, matchId: number, challengeId: ChallengeId): Promise<void> {
+    setAsync(dbClient, "challengeForMatch_" + matchId.toString(), challengeId);
+}
+
+export async function getChallengeIdFromMatchId(dbClient: RedisClient, matchId: number): Promise<ChallengeId> {
+    return getAsync(dbClient, "challengeForMatch_" + matchId.toString());
+}
+
+///////////////////// CHALLENGE
