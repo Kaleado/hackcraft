@@ -1,4 +1,4 @@
-export const serverUrl  = "TODO";
+export const serverUrl  = "http://localhost";
 export const serverPort = 8080;
 
 export let makeServerURL: (() => string) =  () => {

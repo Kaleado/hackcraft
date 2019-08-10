@@ -6,6 +6,11 @@
     padding: 1em;
 }
 
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: row;    
+}
+
 .rank-button-group {
     margin-top: 50px;
 }

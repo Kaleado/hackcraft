@@ -36,12 +36,12 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
   }
 
   render() {
-    if (!this.state.loggedIn) {
+    if (false && !this.state.loggedIn) {
       return <div className="login-panel-position">
         <LoginPanel submitLogin={this.performLogin}></LoginPanel>
       </div>;
     }
 
-    return <Dashboard></Dashboard>;
+    return <Dashboard userId={this.state.userId}></Dashboard>;
   }
 }

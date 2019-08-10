@@ -13,6 +13,7 @@ export class DashboardContentArea extends React.Component<IDashboardContentAreaP
 
     render(){
         return <div>
+            <button>Find match</button>
         </div>;
     }
 }
