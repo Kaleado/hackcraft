@@ -40,7 +40,7 @@ App.post("/matchmaking/status", async (req,res) => {
   res.send(await getMatchStatus(req, res, dbClient));
 });
 
-App.get("/matchmaking/challenge", async (req,res) => {
+App.post("/matchmaking/challenge", async (req,res) => {
   res.send(await getChallenge(req, res, dbClient));
 });
 
