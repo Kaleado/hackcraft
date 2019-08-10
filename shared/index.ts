@@ -29,6 +29,7 @@ export type PublicUser = {
 export type Match = {
     matchId: number,
     playerIds: number[],
+    challengeCategory: ChallengeCategory,
 };
 
 export type LoginRequest = {
