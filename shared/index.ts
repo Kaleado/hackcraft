@@ -39,7 +39,7 @@ export type BackendError = {
 
 export type Submission = {
     userId: number,
-    testsPassed: number,
+    testsFailed: number,
     testsTotal: number,
     stdout: string, // The program output
     stderr: string

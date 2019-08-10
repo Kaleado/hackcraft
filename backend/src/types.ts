@@ -7,6 +7,6 @@ export type ChallengesManifest = {
 export type ChallengeMeta = {
     name: string,
     descriptionFile: string,
-    tests: { script: string }[],
+    tests: number,
     starterCode: { [key: string]: string }
 };

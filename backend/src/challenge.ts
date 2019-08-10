@@ -13,7 +13,7 @@ import { getChallengeIdFromMatchId } from "./db";
 const CHALLENGE_PATH_BASE = "./data/challenges";
 const MANIFEST_FILE = `${CHALLENGE_PATH_BASE}/manifest.json`;
 
-let metaPath = (id: ChallengeId) => `${CHALLENGE_PATH_BASE}/${id}/meta.json`;
+export let metaPath = (id: ChallengeId) => `${CHALLENGE_PATH_BASE}/${id}/meta.json`;
 let starterCodePath = (id: ChallengeId, lang: Language) => `${CHALLENGE_PATH_BASE}/${id}/starter/${lang}.txt`;
 let descriptionPath = (id: ChallengeId) => `${CHALLENGE_PATH_BASE}/${id}/question.md`;
 
