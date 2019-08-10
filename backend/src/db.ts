@@ -1,4 +1,4 @@
-import { User } from "../../shared";
+import { User, Match } from "../../shared";
 import { promisify } from "util";
 import { RedisClient } from "redis";
 
@@ -24,6 +24,8 @@ async function setAsync(dbClient: RedisClient, key: string, value: string): Prom
     return promisify(dbClient.set).bind(dbClient)(key, value);
 }
 
+///////////////////// USER IDS
+
 export async function getNextAvailableId(dbClient: RedisClient): Promise<number> {
     try {
         let result: string = await getAsync(dbClient, "maxUserId");
@@ -38,14 +40,6 @@ export async function getNextAvailableId(dbClient: RedisClient): Promise<number>
         console.error("Error in getNextAvailableId(): " + exc);
         return 1;
     }
-}
-
-export async function mapUsernameToId(dbClient: RedisClient, username: string, userId: number) {
-    setAsync(dbClient, "userId_" + username, userId.toString());
-}
-
-export async function getIdByUserame(dbClient: RedisClient, username: string) : Promise<number> {
-    return parseInt(await getAsync(dbClient, "userId_" + username));
 }
 
 export async function updateNextAvailableId(dbClient: RedisClient): Promise<void> {
@@ -64,6 +58,16 @@ export async function updateNextAvailableId(dbClient: RedisClient): Promise<void
     }
 }
 
+export async function mapUsernameToId(dbClient: RedisClient, username: string, userId: number) {
+    setAsync(dbClient, "userId_" + username, userId.toString());
+}
+
+export async function getIdByUserame(dbClient: RedisClient, username: string) : Promise<number> {
+    return parseInt(await getAsync(dbClient, "userId_" + username));
+}
+
+///////////////////// USER
+
 export async function getUserById(dbClient: RedisClient, userId: number): Promise<User> {
     let user: User = JSON.parse(await getAsync(dbClient, userId.toString()));
     return user;
@@ -79,4 +83,49 @@ export async function getUserByUsername(dbClient: RedisClient, username: string)
 
 export async function addUser(dbClient: RedisClient, user: User): Promise<void> {
     setAsync(dbClient, user.userId.toString(), JSON.stringify(user));
+}
+
+///////////////////// MATCHID
+
+export async function getNextAvailableMatchId(dbClient: RedisClient): Promise<number> {
+    try {
+        let result: string = await getAsync(dbClient, "maxMatchId");
+        if(result === null){
+            return 0;
+        }
+        console.log("Result is " + result);
+        let maxMatchId: number = parseInt(result);
+        return maxMatchId + 1;
+    }
+    catch(exc) {
+        console.error("Error in getNextAvailableMatchId(): " + exc);
+        return 1;
+    }
+}
+
+export async function updateNextAvailableMatchId(dbClient: RedisClient): Promise<void> {
+    try {
+        let maxMatchId: string = await getAsync(dbClient, "maxMatchId");
+        if(maxMatchId == null){
+            await setAsync(dbClient, "maxMatchId", "1");
+            return;
+        }
+        let num = parseInt(maxMatchId) + 1;
+        setAsync(dbClient, "maxMatchId", num.toString());
+    }
+    catch(exc) {
+        console.error(exc);
+        setAsync(dbClient, "maxMatchId", "1");
+    }
+}
+
+///////////////////// MATCH
+
+export async function getMatchById(dbClient: RedisClient, matchId: number): Promise<Match> {
+    let match: Match = JSON.parse(await getAsync(dbClient, "match_" + matchId.toString()));
+    return match;
+}
+
+export async function addMatch(dbClient: RedisClient, match: Match): Promise<void> {
+    setAsync(dbClient, "match_" + match.matchId.toString(), JSON.stringify(match));
 }
