@@ -20,6 +20,8 @@
 .dashboard-content {
     background-color: #212529;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .rank-button-group {
@@ -49,6 +51,16 @@
 
 .sidepanel-selector:focus {outline:0;}
 
+.disabled-selector {
+    width: 100%;
+    border: none 0;
+    background-color: #5e6163;
+    color: gray;
+    height: 50px;
+}
+
+.disabled-selector:focus {outline:0;}
+
 .surrender-button {
     background-color: var(--danger);
     margin-bottom: 1em;
@@ -61,4 +73,21 @@
 .sidepanel-selector-selected {
      background-color: var(--warning) !important;
      color: var(--gray-dark);
+}
+
+.dashboard-content-wrapper {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.find-match-button {
+    height: 60px;
+    width: 200px;
+}
+
+.stats-panel {
+    background-color: white;
+    height: 600px;
+    width: 500px;
 }

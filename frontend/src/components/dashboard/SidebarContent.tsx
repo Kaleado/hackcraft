@@ -46,13 +46,32 @@ export class SidebarContent extends React.Component<ISidebarContentProps, ISideb
         >Unranked</button>
     }
 
+
+
     render() {
         return <div id="sidepanel">
             <h1>HackCraft</h1>
             <div className="sidebar-wrapper">
-                <div className="rank-button-group squashed-buttons">
-                    {this.rankedButton()}
-                    {this.unrankedButton()}
+                <div className="rank-button-group">
+                    <h4>Mode</h4>
+                    <div className="squashed-buttons">
+                        {this.rankedButton()}
+                        {this.unrankedButton()}
+                    </div>
+                    <h4>Programming Paradigm</h4>
+                    <div className="squashed-buttons">
+                        <button className="sidepanel-selector sidepanel-selector-selected">Multi-Paradigm</button>
+                        <button className="disabled-selector" disabled>Functional</button>
+                        <button className="disabled-selector" disabled>Procedural</button>
+                        <button className="disabled-selector" disabled>Scripting</button>
+                    </div>
+                    <h4>Match Size</h4>
+                    <div className="squashed-buttons">
+                        <button className="sidepanel-selector">Solo</button>
+                        <button className="sidepanel-selector sidepanel-selector-selected">1v1</button>
+                        <button className="disabled-selector" disabled>2v2</button>
+                        <button className="disabled-selector" disabled>3v3</button>
+                    </div>
                 </div>
                 <button className="sidepanel-selector logout-button" onClick={this.props.logout}>Logout</button>
             </div>
