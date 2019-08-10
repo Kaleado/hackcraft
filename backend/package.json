@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "yarn run clean && tsc && node ./dist/backend/src/server.js",
+    "start": "yarn run clean && tsc && cp -r ./data ./dist/ && node ./dist/backend/src/server.js",
     "build": "tsc",
     "clean": "rm -rf ./dist/**"
   },

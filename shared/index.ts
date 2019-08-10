@@ -4,10 +4,25 @@ export const serverPort = 8080;
 const ServerURL: string = `${serverUrl}:${serverPort}`;
 export const LoginURL: string = `${ServerURL}/user/login`;
 
-export type ChallengeCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
+export function hasKeys(obj: any, keys: string[]): boolean {
+    return !keys.some((k: string) => {
+        return obj[k] == undefined;
+    });
+}
+
+export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";;
+
+export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 
 export type BackendError = {
     reason: string,
+};
+
+export type Challenge = {
+    name: string,
+    description: string,
+    numTests: number,
+    starterCode: {[key: string]: string}
 };
 
 export type User = {
@@ -24,7 +39,10 @@ export type PublicUser = {
 export type Match = {
     matchId: number,
     playerIds: number[],
-    challengeCategory: ChallengeCategory,
+    isRanked: boolean,
+    maxPlayers: number, // number of players in the game
+    matchCategory: MatchCategory,
+    matchStatus: MatchStatus,
 };
 
 export type LoginRequest = {
@@ -47,9 +65,23 @@ export type SignupResponse = {
 
 export type StartMatchmakingRequest = {
     userId: number,
-    challengeCategory: ChallengeCategory,
+    isRanked: boolean,
+    maxPlayers: number,
+    matchCategory: MatchCategory,
 };
 
 export type StartMatchmakingResponse = {
     matchId: number // Identifies the game that you've just made.
 };
+
+export type MatchStatusRequest = {
+    matchId: number,
+};
+
+export type MatchStatusResponse = Match;
+
+export type GetChallengeRequest = {
+    matchId: number
+};
+
+export type GetChallengeResponse = Challenge;

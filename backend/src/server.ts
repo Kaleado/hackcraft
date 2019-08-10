@@ -1,12 +1,10 @@
 import express from "express";
 import { signup, login } from "./user";
-import { startMatchmaking } from "./matchmaking";
+import { startMatchmaking, getMatchStatus } from "./matchmaking";
+import { getChallenge } from "./challenge";
 import Redis from "redis";
 import BodyParser from "body-parser";
 import Cors from "cors";
-// import Bluebird from "bluebird";
-
-// let dbClient = Bluebird.promisifyAll(Redis.createClient());
 
 let dbClient: Redis.RedisClient = Redis.createClient();
 
@@ -36,6 +34,14 @@ App.post("/user/signup", async (req,res) => {
 
 App.post("/matchmaking/start", async (req,res) => {
   res.send(await startMatchmaking(req, res, dbClient));
+});
+
+App.post("/matchmaking/status", async (req,res) => {
+  res.send(await getMatchStatus(req, res, dbClient));
+});
+
+App.get("/matchmaking/challenge", async (req,res) => {
+  res.send(await getChallenge(req, res, dbClient));
 });
 
 // This part should go last!
