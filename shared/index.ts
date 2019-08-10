@@ -5,15 +5,12 @@ const ServerURL: string = `${serverUrl}:${serverPort}`;
 export const LoginURL: string = `${ServerURL}/user/login`;
 
 export function hasKeys(obj: any, keys: string[]): boolean {
-    return keys.some((k: string) => {
+    return !keys.some((k: string) => {
         return obj[k] == undefined;
     });
 }
 
-// DEPRECATED
-export type ChallengeCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
-
-export type MatchCategory = ChallengeCategory;
+export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";;
 
 export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 
@@ -43,7 +40,7 @@ export type Match = {
     matchId: number,
     playerIds: number[],
     maxPlayers: number, // number of players in the game
-    challengeCategory: ChallengeCategory,
+    matchCategory: MatchCategory,
     matchStatus: MatchStatus,
 };
 
@@ -68,7 +65,7 @@ export type SignupResponse = {
 export type StartMatchmakingRequest = {
     userId: number,
     maxPlayers: number,
-    challengeCategory: ChallengeCategory,
+    matchCategory: MatchCategory,
 };
 
 export type StartMatchmakingResponse = {

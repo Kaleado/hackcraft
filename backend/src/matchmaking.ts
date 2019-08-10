@@ -12,7 +12,7 @@ import { getNextAvailableMatchId, updateNextAvailableMatchId, addMatch, getAllMa
 
 export async function startMatchmaking(req, res, dbClient: RedisClient) : Promise<StartMatchmakingResponse | BackendError> {
     let reqBody: StartMatchmakingRequest = req.body;
-    if(!hasKeys(reqBody, ["userId", "challengeCategory", "maxPlayers"])){
+    if(!hasKeys(reqBody, ["userId", "matchCategory", "maxPlayers"])){
         return {
             reason: "Missing required parameters"
         };
@@ -20,7 +20,7 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
     //Add ourselves to a match that exists that meets our criteria.
     let matches: Match[] = await getAllMatches(dbClient);
     let joinableMatch: Match | undefined = matches.find((m: Match) => {
-        return m.challengeCategory == reqBody.challengeCategory &&
+        return m.matchCategory == reqBody.matchCategory &&
                m.playerIds.length < m.maxPlayers;
     });
     if(joinableMatch !== undefined){
@@ -42,7 +42,7 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
         maxPlayers: reqBody.maxPlayers,
         playerIds: [ reqBody.userId ],
         matchStatus: "SEARCHING",
-        challengeCategory: reqBody.challengeCategory,
+        matchCategory: reqBody.matchCategory,
     };
     updateNextAvailableMatchId(dbClient);
     addMatch(dbClient, match);
