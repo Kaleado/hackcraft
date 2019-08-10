@@ -5,15 +5,14 @@ import {
     Match, 
     MatchStatusResponse,
     MatchStatusRequest,
+    hasKeys
 } from "../../shared";
 import { RedisClient } from "redis";
 import { getNextAvailableMatchId, updateNextAvailableMatchId, addMatch, getAllMatches, getMatchById } from "./db";
 
 export async function startMatchmaking(req, res, dbClient: RedisClient) : Promise<StartMatchmakingResponse | BackendError> {
     let reqBody: StartMatchmakingRequest = req.body;
-    if(reqBody.userId === undefined || 
-       reqBody.challengeCategory === undefined || 
-       reqBody.maxPlayers === undefined) {
+    if(!hasKeys(reqBody, ["userId", "challengeCategory", "maxPlayers"])){
         return {
             reason: "Missing required parameters"
         };
@@ -55,7 +54,7 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
 
 export async function getMatchStatus(req, res, dbClient: RedisClient) : Promise<MatchStatusResponse | BackendError> {
     let reqBody: MatchStatusRequest = req.body;
-    if(reqBody.matchId === undefined){
+    if(!hasKeys(reqBody, ["matchId"])) {
         return {
             reason: "Missing required parameters"
         };

@@ -1,8 +1,8 @@
-import { SignupResponse, BackendError, User, LoginResponse } from '../../shared';
+import { SignupResponse, BackendError, User, LoginResponse, hasKeys } from '../../shared';
 import { addUser, updateNextAvailableId, getNextAvailableId, getUserByUsername, mapUsernameToId } from "./db";
 
 export async function signup(request, response, dbClient): Promise<SignupResponse | BackendError> {
-    if(request.body.username === undefined || request.body.password === undefined){
+    if(!hasKeys(request.body, ["username", "password"])){
         return {
             reason: "Missing required parameters"
         };
@@ -21,7 +21,7 @@ export async function signup(request, response, dbClient): Promise<SignupRespons
 }
 
 export async function login(request, response, dbClient): Promise<LoginResponse | BackendError> {
-    if(request.body.username === undefined || request.body.password === undefined){
+    if(!hasKeys(request.body, ["username", "password"])){
         return {
             reason: "Missing required parameters"
         };

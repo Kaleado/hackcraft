@@ -10,12 +10,22 @@ export function hasKeys(obj: any, keys: string[]): boolean {
     });
 }
 
+// DEPRECATED
 export type ChallengeCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
+
+export type MatchCategory = ChallengeCategory;
 
 export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 
 export type BackendError = {
     reason: string,
+};
+
+export type Challenge = {
+    name: string,
+    description: string,
+    numTests: number,
+    starterCode: {[key: string]: string}
 };
 
 export type User = {
@@ -70,3 +80,9 @@ export type MatchStatusRequest = {
 };
 
 export type MatchStatusResponse = Match;
+
+export type GetChallengeRequest = {
+    matchId: number
+};
+
+export type GetChallengeResponse = Challenge;

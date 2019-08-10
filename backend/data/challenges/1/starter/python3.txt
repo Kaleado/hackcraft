@@ -1,0 +1,2 @@
+def func():
+    # Write your solution here.
