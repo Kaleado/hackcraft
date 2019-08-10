@@ -3,6 +3,8 @@ const serverPort = 8080;
 
 const frontendPort = "TODO";
 
+export type ChallengeCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
+
 export type BackendError = {
     reason: string,
 };
@@ -34,4 +36,13 @@ export type User = {
 export type PublicUser = {
     userId: number,
     username: string,
+};
+
+export type StartMatchmakingRequest = {
+    userId: number,
+    challengeCategory: ChallengeCategory,
+};
+
+export type StartMatchmakingResponse = {
+    matchId: number // Identifies the game that you've just made.
 };

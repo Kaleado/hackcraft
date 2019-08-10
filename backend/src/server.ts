@@ -1,6 +1,7 @@
 import express from "express";
 import { mockLogin } from "./mockLogin";
-import { signup, login } from "./user"
+import { signup, login } from "./user";
+import { startMatchmaking } from "./matchmaking";
 import Redis from "redis";
 import BodyParser from "body-parser";
 // import Bluebird from "bluebird";
@@ -34,6 +35,10 @@ App.post("/user/login", async (req, res) => {
 
 App.post("/user/signup", async (req,res) => {
   res.send(await signup(req, res, dbClient));
+});
+
+App.post("/matchmaking/start", async (req,res) => {
+  res.send(await startMatchmaking(req, res, dbClient));
 });
 
 // This part should go last!
