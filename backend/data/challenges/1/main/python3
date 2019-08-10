@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+
+import json
+import os
+
+def make_list(s):
+    cs = s.split()
+    nums = []
+    for c in cs:
+        nums.append(int(c))
+    return nums
+
+# this should be run from the root folder for this test
+if __name__ == '__main__':
+    import sys
+
+    sys.path.insert(0, './user')
+    import Solution 
+
+    with open("meta.json") as meta:
+        meta_data = json.loads(meta.read())
+        num_tests = int(meta_data["tests"])
+
+        num_passed = 0
+        
+        for i in range(1, num_tests+1):
+            with open("tests/" + str(i) + ".in") as inp:
+                with open("tests/" + str(i) + ".out") as out:
+                    l = make_list(inp.read())
+                    expected = int(out.read())
+                    actual = Solution.solution(l)
+                    if expected == actual:
+                        num_passed += 1
+        
+        if num_passed == num_tests:
+            sys.exit(0) # passed all tests
+        
+        print(num_passed)
+        sys.exit(1)
