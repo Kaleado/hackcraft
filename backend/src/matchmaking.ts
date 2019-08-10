@@ -50,13 +50,14 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
     let match: Match = {
         matchId: matchId,
         maxPlayers: reqBody.maxPlayers,
-        playerIds: [ reqBody.userId ],
+        playerIds: [ ],
         isRanked: reqBody.isRanked,
-        matchStatus: (reqBody.maxPlayers == 1 ? "STARTED" : "SEARCHING"),
+        matchStatus: "SEARCHING",
         matchCategory: reqBody.matchCategory,
     };
     updateNextAvailableMatchId(dbClient);
     addMatch(dbClient, match);
+    joinMatch(reqBody.userId, match, dbClient);
     console.log("Created new match with matchId ", matchId);
     return { 
         matchId: matchId

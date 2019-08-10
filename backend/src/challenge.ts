@@ -51,7 +51,6 @@ export async function getChallenge(req, res, dbClient: RedisClient) : Promise<Ch
         let description: string = readDescriptionFile(challengeIdForMatch);
         let starterCodeObj = {};
         starterCodeObj[body.language] = starterCode;
-
         return {
             name: meta.name,
             description: description,
