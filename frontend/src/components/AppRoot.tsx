@@ -31,6 +31,9 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
     fetch(Globals.LoginURL, {
       method: "POST",
       body: JSON.stringify(l),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).then(dat => dat.json())
       .then((data: Globals.LoginResponse) => {
         this.setState({
@@ -51,6 +54,8 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
       </div>;
     }
 
-    return <Dashboard userId={this.state.userId}></Dashboard>;
+    return <Dashboard
+      logout={() => this.setState({loggedIn: false})}
+      userId={this.state.userId}></Dashboard>;
   }
 }

@@ -5,6 +5,7 @@ import { Game } from "../editor/Game";
 
 interface IDashboardProps {
     userId: number;
+    logout: () => void;
 }
 
 interface IDashboardState{
@@ -18,7 +19,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
 
         this.state = {
             inGame: false,
-            matchId: -1
+            matchId: 1
         };
     }
 
@@ -29,17 +30,24 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         });
     };
 
+    exitMatch = () => {
+        this.setState({inGame: false});
+    };
+
     render(){
         if (!this.state.inGame) {
             return <div className="dashboard-wrapper">
-                <SidebarContent></SidebarContent>
+                <SidebarContent logout={this.props.logout}></SidebarContent>
                 <DashboardContentArea gameStart={this.startGame}></DashboardContentArea>
             </div>;
         }
 
 
         return <div className="dashboard-wrapper">
-            <Game matchId={this.state.matchId}></Game>
+            <Game
+                matchId={this.state.matchId}
+                exitMatch={this.exitMatch}>
+            </Game>
         </div>;
 
 

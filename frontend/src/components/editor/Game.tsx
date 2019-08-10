@@ -4,6 +4,7 @@ import MonacoEditor from "react-monaco-editor";
 
 interface IGameProps {
     matchId: number;
+    exitMatch: () => void;
 };
 
 interface IGameState {
@@ -43,7 +44,7 @@ export class Game extends React.Component<IGameProps, IGameState> {
         const remainingWidth = window.innerWidth - 600;
 
         return <div className="dashboard-wrapper">
-            <GameSidePanel matchId={this.props.matchId} runTests={this.runTests}></GameSidePanel>
+            <GameSidePanel exitMatch={this.props.exitMatch} matchId={this.props.matchId} runTests={this.runTests}></GameSidePanel>
             <MonacoEditor
                 width={remainingWidth.toString()}
                 height={window.innerHeight.toString()}

@@ -1,6 +1,7 @@
 import * as React from "react";
 
 interface ISidebarContentProps {
+    logout: () => void;
 };
 
 interface ISidebarContentState {
@@ -46,7 +47,7 @@ export class SidebarContent extends React.Component<ISidebarContentProps, ISideb
                     {this.rankedButton()}
                     {this.unrankedButton()}
                 </div>
-                <button className="sidepanel-selector logout-button">Logout</button>
+                <button className="sidepanel-selector logout-button" onClick={this.props.logout}>Logout</button>
             </div>
         </div>;
     }

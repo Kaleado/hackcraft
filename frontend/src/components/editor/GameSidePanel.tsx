@@ -6,6 +6,7 @@ import * as Globals from "../../../../shared/index";
 interface IGameSidePanelProps {
     runTests: () => string;
     matchId: number;
+    exitMatch: () => void;
 };
 
 interface IGameSidePanelState {
@@ -44,14 +45,19 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
 
     getChallengeMd = () => {
         let body: Globals.GetChallengeRequest = {
-            matchId: this.props.matchId
+            matchId: this.props.matchId,
+            language: "python3"
         };
 
         fetch(Globals.ChallengeUrl, {
-            // method: "POST",
-            // body: JSON.stringify(body)
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         }).then(d => d.json())
           .then((data: Globals.Challenge) => {
+              console.log(data);
               this.setState({ challenge: data });
         }).catch(e => console.log(e));
     };
@@ -79,7 +85,7 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                         </div>
                     }
                 </div>
-                <button className="sidepanel-selector surrender-button">Surrender</button>
+                <button className="sidepanel-selector surrender-button" onClick={this.props.exitMatch}>Surrender</button>
             </div>
         </div>;
     }
