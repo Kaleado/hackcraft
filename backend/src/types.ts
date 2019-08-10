@@ -1,3 +1,5 @@
+// Server-private types.
+
 export type ChallengesManifest = {
     challenges: string[]
 };
