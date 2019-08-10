@@ -35,6 +35,6 @@ export async function login(req, res, dbClient): Promise<LoginResponse | Backend
         return { reason: "Incorrect password or missing user" };
     }
     return {
-        userId: user.userId
+        userId: user.userId,
     };
 }

@@ -6,6 +6,7 @@ import { makeSubmission } from "./submission";
 import Redis from "redis";
 import BodyParser from "body-parser";
 import Cors from "cors";
+import { PATH_MATCHMAKING_START, PATH_MATCH_STATUS, PATH_GET_CHALLENGE, PATH_MAKE_SUBMISSION, PATH_LOGIN, PATH_SIGNUP } from "../../shared";
 
 let dbClient: Redis.RedisClient = Redis.createClient();
 
@@ -25,27 +26,27 @@ App.get("/", (request, response) => {
   response.send("Hello world, it's me!");
 });
 
-App.post("/user/login", async (req, res) => {
+App.post(PATH_LOGIN, async (req, res) => {
   res.send(await login(req, res, dbClient));
 });
 
-App.post("/user/signup", async (req,res) => {
+App.post(PATH_SIGNUP, async (req,res) => {
   res.send(await signup(req, res, dbClient));
 });
 
-App.post("/matchmaking/start", async (req,res) => {
+App.post(PATH_MATCHMAKING_START, async (req,res) => {
   res.send(await startMatchmaking(req, res, dbClient));
 });
 
-App.post("/matchmaking/status", async (req,res) => {
+App.post(PATH_MATCH_STATUS, async (req,res) => {
   res.send(await getMatchStatus(req, res, dbClient));
 });
 
-App.post("/matchmaking/challenge", async (req,res) => {
+App.post(PATH_GET_CHALLENGE, async (req,res) => {
   res.send(await getChallenge(req, res, dbClient));
 });
 
-App.post("/submission/make", async (req,res) => {
+App.post(PATH_MAKE_SUBMISSION, async (req,res) => {
   res.send(await makeSubmission(req, res, dbClient));
 });
 

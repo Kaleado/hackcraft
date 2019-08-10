@@ -20,6 +20,13 @@ export function missingKeys(obj: any, keys: string[]): string[] {
     return missing;
 }
 
+export const PATH_LOGIN = "user/login";
+export const PATH_SIGNUP = "user/signup";
+export const PATH_MATCHMAKING_START = "matchmaking/start";
+export const PATH_MATCH_STATUS = "matchmaking/status";
+export const PATH_GET_CHALLENGE = "matchmaking/challenge";
+export const PATH_MAKE_SUBMISSION = "submission/make";
+
 export type Language = "python3" | "c++";
 
 export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";;
