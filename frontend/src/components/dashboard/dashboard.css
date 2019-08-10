@@ -1,14 +1,27 @@
 #sidepanel {
-    width: 300px;
+    width: 600px;
     height: 100vh;
     background-color: var(--gray-dark);
     color: white;
     padding: 1em;
 }
 
+.squashed-buttons {
+    display:flex;
+    flex-direction: row;    
+    margin-bottom: 3em;
+}
+
 .dashboard-wrapper {
     display: flex;
     flex-direction: row;    
+}
+
+.dashboard-content {
+    background-color: #212529;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .rank-button-group {
@@ -23,10 +36,9 @@
 }
 
 .sidepanel-selector {
-    width: calc(100% + 2em);
-    margin-left: -1em;
+    width: 100%;
     border: none 0;
-    background-color: var(--grey-dark);
+    background-color: var(--gray);
     color: white;
     height: 50px;
 }
@@ -39,8 +51,43 @@
 
 .sidepanel-selector:focus {outline:0;}
 
+.disabled-selector {
+    width: 100%;
+    border: none 0;
+    background-color: #5e6163;
+    color: gray;
+    height: 50px;
+}
+
+.disabled-selector:focus {outline:0;}
+
+.surrender-button {
+    background-color: var(--danger);
+    margin-bottom: 1em;
+}
+
+.logout-button {
+    margin-bottom: 1em;
+}
 
 .sidepanel-selector-selected {
      background-color: var(--warning) !important;
      color: var(--gray-dark);
+}
+
+.dashboard-content-wrapper {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.find-match-button {
+    height: 60px;
+    width: 200px;
+}
+
+.stats-panel {
+    background-color: white;
+    height: 600px;
+    width: 500px;
 }

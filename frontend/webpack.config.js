@@ -1,9 +1,10 @@
 const path = require("path");
 const chalk = require("chalk");
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
-console.log("\n\n");
+console.log("\n");
 console.log(chalk.green("Starting web server at http://localhost:8000"));
-console.log("\n\n\n");
+console.log("\n\n");
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -33,9 +34,8 @@ module.exports = {
             // CSS files
             { 
                 test: /\.css$/,
-                exclude: [/node_modules/],
                 use: ['style-loader', 'css-loader'],
-                include: path.join(__dirname, 'src/'),
+                include: [path.join(__dirname, "node_modules/monaco-editor/"), path.join(__dirname, 'src/')],
             },
         ]
     },
@@ -43,6 +43,10 @@ module.exports = {
         port: 8000,
         writeToDisk: true
     },
+
+    plugins: [
+        new MonacoWebpackPlugin()
+    ],
 
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.
