@@ -52,7 +52,7 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
         maxPlayers: reqBody.maxPlayers,
         playerIds: [ reqBody.userId ],
         isRanked: reqBody.isRanked,
-        matchStatus: "SEARCHING",
+        matchStatus: (reqBody.maxPlayers == 1 ? "STARTED" : "SEARCHING"),
         matchCategory: reqBody.matchCategory,
     };
     updateNextAvailableMatchId(dbClient);
