@@ -13,6 +13,7 @@
     "@types/redis": "^2.8.13",
     "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "redis": "^2.8.0",
     "tslint": "^5.16.0",

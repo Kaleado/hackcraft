@@ -1,9 +1,9 @@
 import express from "express";
-import { mockLogin } from "./mockLogin";
 import { signup, login } from "./user";
 import { startMatchmaking } from "./matchmaking";
 import Redis from "redis";
 import BodyParser from "body-parser";
+import Cors from "cors";
 // import Bluebird from "bluebird";
 
 // let dbClient = Bluebird.promisifyAll(Redis.createClient());
@@ -14,6 +14,7 @@ let dbClient: Redis.RedisClient = Redis.createClient();
 const PORT = 8080;
 // Create a new server with express
 const App = express();
+App.use(Cors());
 App.use(BodyParser.urlencoded({
   extended: false
 }));
@@ -23,10 +24,6 @@ App.use(BodyParser.json());
 App.get("/", (request, response) => {
   // Send back a one line response
   response.send("Hello world, it's me!");
-});
-
-App.post("/user/mocklogin", async (req, res) => {
-  res.send(await mockLogin(req, res, dbClient));
 });
 
 App.post("/user/login", async (req, res) => {
