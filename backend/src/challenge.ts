@@ -5,7 +5,7 @@ import {
     ChallengeId,
     Language, 
     GetChallengeRequest,
-    hasKeys} from "../../shared";
+    missingKeys } from "../../shared";
 import { ChallengesManifest, ChallengeMeta } from "./types";
 import Fs from "fs";
 import { getChallengeIdFromMatchId } from "./db";
@@ -41,8 +41,11 @@ export function readDescriptionFile(challengeId: ChallengeId): string {
 
 export async function getChallenge(req, res, dbClient: RedisClient) : Promise<Challenge | BackendError> {
     let body: GetChallengeRequest = req.body;
-    if(!hasKeys(body, ["language", "matchId"])){
-        return { reason: "Missing required parameters" };
+    const missing: string[] = missingKeys(body, ["language", "matchId"]);
+    if(missing.length > 0){
+        return {
+            reason: "Missing required parameters: " + missing.toString()
+        };
     }
     try {
         let challengeIdForMatch: ChallengeId = await getChallengeIdFromMatchId(dbClient, body.matchId);
