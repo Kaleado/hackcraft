@@ -36,7 +36,7 @@ if __name__ == '__main__':
                             num_passed += 1
             if num_passed == num_tests:
                 sys.exit(0) # passed all tests
-            raise Exception("")
+            raise Exception("Failed tests")
         except Exception as e:
             _, _, myTb = sys.exc_info()
             sys.stderr.write('\n'.join(tb.format_tb(myTb)))
