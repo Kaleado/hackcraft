@@ -17,7 +17,7 @@ export class DashboardContentArea extends React.Component<IDashboardContentAreaP
     }
 
     render(){
-        return <div>
+        return <div className="dashboard-content">
             <button onClick={this.startGame}>Find match</button>
         </div>;
     }

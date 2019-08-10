@@ -17,7 +17,12 @@
     flex-direction: row;    
 }
 
-.rank-button-group {
+.dashboard-content {
+    background-color: #212529;
+    width: 100%;
+}
+
+.rank-button-group surrender{
     margin-top: 50px;
 }
 
@@ -44,6 +49,14 @@
 
 .sidepanel-selector:focus {outline:0;}
 
+.surrender-button {
+    background-color: var(--danger);
+    margin-bottom: 1em;
+}
+
+.logout-button {
+    margin-bottom: 1em;
+}
 
 .sidepanel-selector-selected {
      background-color: var(--warning) !important;
