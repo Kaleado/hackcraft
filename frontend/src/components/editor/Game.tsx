@@ -3,6 +3,7 @@ import { GameSidePanel } from "./GameSidePanel";
 import MonacoEditor from "react-monaco-editor";
 import * as Globals from "../../../../shared/index";
 import { Modal, Button } from "react-bootstrap";
+import { MatchStatus } from "../../../../shared";
 
 interface IGameProps {
     matchId: number;
@@ -13,7 +14,10 @@ interface IGameProps {
 interface IGameState {
     code: string;
     hasWon: boolean;
+    matchStatus: MatchStatus;
 };
+
+const POLL_INTERVAL = 1000;
 
 export class Game extends React.Component<IGameProps, IGameState> {
 
@@ -22,7 +26,8 @@ export class Game extends React.Component<IGameProps, IGameState> {
 
         this.state = {
             code: "# Loading...",
-            hasWon: false
+            hasWon: false,
+            matchStatus: "STARTED"
         };
     }
 
@@ -65,6 +70,21 @@ export class Game extends React.Component<IGameProps, IGameState> {
         this.setState({ code: newCode })
     };
 
+    pollForStatusChanges = () => {
+        fetch(`${Globals.serverUrl}:${Globals.serverPort}${Globals.PATH_MATCH_STATUS}`, {
+            method: "POST",
+            body: JSON.stringify({matchId: this.props.matchId}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(d1 => d1.json())
+        .then((status: Globals.MatchStatusResponse) => {
+            if(status.matchStatus == "ENDED") this.setState({
+                matchStatus: "ENDED"
+            });
+            else setTimeout(this.pollForStatusChanges, POLL_INTERVAL);
+        });
+    };
 
     render() {
         const options = {
