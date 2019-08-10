@@ -23,8 +23,15 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
   }
 
   performLogin = (un: string, pw: string) => {
-    fetch(Globals.makeServerURL())
-      .then(dat => dat.json())
+    let l: Globals.LoginRequest = {
+        username: un,
+        password: pw
+    };
+
+    fetch(Globals.LoginURL(), {
+      method: "POST",
+      body: JSON.stringify(l),
+    }).then(dat => dat.json())
       .then((data: Globals.LoginResponse) => {
         this.setState({
           loggedIn: true,
@@ -36,7 +43,7 @@ export class AppRoot extends React.Component<IAppRootProps, IAppRootState> {
   }
 
   render() {
-    if (false && !this.state.loggedIn) {
+    if (!this.state.loggedIn) {
       return <div className="login-panel-position">
         <LoginPanel submitLogin={this.performLogin}></LoginPanel>
       </div>;

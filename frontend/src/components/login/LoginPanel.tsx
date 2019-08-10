@@ -12,6 +12,14 @@ interface ILoginPanelState {
 
 export class LoginPanel extends React.Component<ILoginPanelProps, ILoginPanelState> {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: "",
+            password: ""
+        };
+    }
+
     changeUsername = (e) => {
         this.setState({
             username: e.target.value
