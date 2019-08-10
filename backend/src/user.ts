@@ -31,6 +31,9 @@ export async function login(req, res, dbClient): Promise<LoginResponse | Backend
         };
     }
     let user: User = await getUserByUsername(dbClient, req.body.username);
+    if(user === null || user.password != body.password){
+        return { reason: "Incorrect password or missing user" };
+    }
     return {
         userId: user.userId
     };
