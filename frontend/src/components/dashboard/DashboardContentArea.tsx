@@ -5,12 +5,22 @@ interface IDashboardContentAreaProps {
 }
 
 interface IDashboardContentAreaState{
+    isLoading: boolean;
 }
 
 export class DashboardContentArea extends React.Component<IDashboardContentAreaProps, IDashboardContentAreaState> {
     constructor(props) {
         super(props);
+
+        this.state = {
+            isLoading: false,
+        };
     }
+
+    gameStart = () => {
+        this.setState({isLoading: true});
+        this.props.gameStart();
+    };
 
     render(){
         return <div className="dashboard-content">
@@ -23,7 +33,14 @@ export class DashboardContentArea extends React.Component<IDashboardContentAreaP
                     <h4>Average Time: 12 minutes</h4>
                 </div>
                 <div className="find-match-wrapper">
-                    <button className="find-match-button btn btn-light" onClick={this.props.gameStart}>Find match</button>
+                    <button className="find-match-button btn btn-light" onClick={this.gameStart}>
+                        {this.state.isLoading && 
+                            <span className="spinner-grow spinner-grow-sm" 
+                                  style={{marginRight: "1em", marginLeft: "-1.5em"}}
+                            ></span>
+                        }
+                        Find match
+                    </button>
                 </div>
             </div>
         </div>;
