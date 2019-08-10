@@ -5,7 +5,7 @@ import {
     ChallengeId,
     Language, 
     GetChallengeRequest,
-    hasKeys} from "../../shared";
+    missingKeys } from "../../shared";
 import { ChallengesManifest, ChallengeMeta } from "./types";
 import Fs from "fs";
 import { getChallengeIdFromMatchId } from "./db";
@@ -13,7 +13,7 @@ import { getChallengeIdFromMatchId } from "./db";
 const CHALLENGE_PATH_BASE = "./data/challenges";
 const MANIFEST_FILE = `${CHALLENGE_PATH_BASE}/manifest.json`;
 
-let metaPath = (id: ChallengeId) => `${CHALLENGE_PATH_BASE}/${id}/meta.json`;
+export let metaPath = (id: ChallengeId) => `${CHALLENGE_PATH_BASE}/${id}/meta.json`;
 let starterCodePath = (id: ChallengeId, lang: Language) => `${CHALLENGE_PATH_BASE}/${id}/starter/${lang}.txt`;
 let descriptionPath = (id: ChallengeId) => `${CHALLENGE_PATH_BASE}/${id}/question.md`;
 
@@ -41,8 +41,11 @@ export function readDescriptionFile(challengeId: ChallengeId): string {
 
 export async function getChallenge(req, res, dbClient: RedisClient) : Promise<Challenge | BackendError> {
     let body: GetChallengeRequest = req.body;
-    if(!hasKeys(body, ["language", "matchId"])){
-        return { reason: "Missing required parameters" };
+    const missing: string[] = missingKeys(body, ["language", "matchId"]);
+    if(missing.length > 0){
+        return {
+            reason: "Missing required parameters: " + missing.toString()
+        };
     }
     try {
         let challengeIdForMatch: ChallengeId = await getChallengeIdFromMatchId(dbClient, body.matchId);

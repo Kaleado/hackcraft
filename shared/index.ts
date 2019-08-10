@@ -12,6 +12,23 @@ export function hasKeys(obj: any, keys: string[]): boolean {
     });
 }
 
+// Returns the keys in keys that are missing from obj.
+export function missingKeys(obj: any, keys: string[]): string[] {
+    let missing: string[] = [];
+    for(let i in keys){
+        let k: string = keys[i];
+        if(obj[k] === undefined) missing.push(k);
+    }
+    return missing;
+}
+
+export const PATH_LOGIN = "/user/login";
+export const PATH_SIGNUP = "/user/signup";
+export const PATH_MATCHMAKING_START = "/matchmaking/start";
+export const PATH_MATCH_STATUS = "/matchmaking/status";
+export const PATH_GET_CHALLENGE = "/matchmaking/challenge";
+export const PATH_MAKE_SUBMISSION = "/submission/make";
+
 export type Language = "python3" | "c++";
 
 export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
@@ -20,6 +37,14 @@ export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 
 export type BackendError = {
     reason: string,
+};
+
+export type Submission = {
+    userId: number,
+    testsFailed: number,
+    testsTotal: number,
+    stdout: string, // The program output
+    stderr: string
 };
 
 export type ChallengeId = string;
@@ -37,11 +62,6 @@ export type User = {
     password: string,
 };
 
-export type PublicUser = {
-    userId: number,
-    username: string,
-};
-
 export type Match = {
     matchId: number,
     playerIds: number[],
@@ -49,6 +69,7 @@ export type Match = {
     maxPlayers: number, // number of players in the game
     matchCategory: MatchCategory,
     matchStatus: MatchStatus,
+    submissions: Submission[]
 };
 
 export type LoginRequest = {
@@ -93,14 +114,11 @@ export type GetChallengeRequest = {
 
 export type GetChallengeResponse = Challenge;
 
-export type SubmissionRequest = {
-    userId: string,
+export type MakeSubmissionRequest = {
+    userId: number,
     matchId: number,
     submittedCode: string,
     submittedLanguage: Language,
 };
 
-export type SubmissionResponse = {
-    testsPassed: number,
-    testsTotal: number,
-};
+export type MakeSubmissionResponse = Submission;

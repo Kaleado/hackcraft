@@ -62,3 +62,6 @@ typings/
 
 # Any build folder
 *dist/
+
+# Redis dumps 
+dump.rdb
