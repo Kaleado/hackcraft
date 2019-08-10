@@ -1,0 +1,22 @@
+.login-panel {
+    width: 400px;
+    height: 600px;
+    padding: 1em;
+}
+
+.login-text {
+    text-align: center;
+}
+
+.loginButton {
+    width: 200px;
+}
+
+.login-form {
+    margin-top: 100px;
+    margin-left: 10%;
+    width: 80%;
+}
+
+#username-input {
+}
