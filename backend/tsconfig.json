@@ -8,5 +8,8 @@
     "outDir": "dist",
     "noImplicitAny": false
   },
-  "lib": ["es2015"]
+  "lib": ["es2015"],
+  "include": [
+    "./src/**/*"
+  ]
 }
