@@ -1,2 +1,2 @@
-def func():
+def solution():
     # Write your solution here.

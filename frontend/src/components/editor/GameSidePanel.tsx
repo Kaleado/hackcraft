@@ -2,6 +2,8 @@ import * as React from "react";
 import * as marked from 'marked';
 import "../dashboard/dashboard.css";
 import * as Globals from "../../../../shared/index";
+import { ProgressBar } from 'react-bootstrap';
+
 
 interface IGameSidePanelProps {
     runTests: () => string;
@@ -14,6 +16,8 @@ interface IGameSidePanelState {
     awaitingTestResults: boolean;
     isOnTestPanel: boolean;
     challenge: Globals.Challenge | null;
+    currentNumberTestsPassed: number;
+    totalNumberTests: number;
 };
 
 export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSidePanelState> {
@@ -23,7 +27,9 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
         this.state = {
             awaitingTestResults: false,
             isOnTestPanel: false,
-            challenge: null
+            challenge: null,
+            currentNumberTestsPassed: 0,
+            totalNumberTests: 1, // To be updated by API call
         };
 
         this.getChallengeMd();
@@ -32,7 +38,11 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
     testButton() {
         let c = "sidepanel-selector";
 
-        return <button type="button" className={c}
+        const bumper = {
+            marginBottom: "1em"
+        }; 
+
+        return <button style={bumper} type="button" className={c}
             onClick={() => {
                 this.setState({
                     awaitingTestResults: true
@@ -76,7 +86,22 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                             onClick={() => this.setState({ isOnTestPanel: false })}
                         >Problem</button>
                     </div>
-                    {this.state.isOnTestPanel && this.testButton()}
+                    {this.state.isOnTestPanel && 
+                        <div className="test-section">
+                            {this.testButton()}
+                            <h3>Tests passed:</h3>
+                            <div className="test-progress-bar">
+                                <ProgressBar variant="success" 
+                                    now={this.state.currentNumberTestsPassed/this.state.totalNumberTests}
+                                    label={`${this.state.currentNumberTestsPassed/this.state.totalNumberTests}%`} 
+                                />
+                            </div>
+                            <h3 style={{ color: "green" }}>Last Test Stdout:</h3>
+                            <div className="card stdout-output"></div>
+                            <h3 style={{ color: "red" }}>Last Test Stderr:</h3>
+                            <div className="card stderr-output">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                        </div>
+                    }
                     {(!this.state.isOnTestPanel) && 
                         <div>
                             <div dangerouslySetInnerHTML={{
