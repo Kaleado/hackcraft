@@ -1,5 +1,4 @@
 import * as React from "react";
-import { SidePanel } from "./SidePanel";
 import { DashboardContentArea } from "./DashboardContentArea";
 import { SidebarContent } from "./SidebarContent";
 import { Game } from "../editor/Game";

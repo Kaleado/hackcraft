@@ -1,9 +1,15 @@
 #sidepanel {
-    width: 450px;
+    width: 600px;
     height: 100vh;
     background-color: var(--gray-dark);
     color: white;
     padding: 1em;
+}
+
+.squashed-buttons {
+    display:flex;
+    flex-direction: row;    
+    margin-bottom: 3em;
 }
 
 .dashboard-wrapper {
@@ -23,10 +29,9 @@
 }
 
 .sidepanel-selector {
-    width: calc(100% + 2em);
-    margin-left: -1em;
+    width: 100%;
     border: none 0;
-    background-color: var(--grey-dark);
+    background-color: var(--gray);
     color: white;
     height: 50px;
 }
