@@ -39,6 +39,7 @@ export type PublicUser = {
 export type Match = {
     matchId: number,
     playerIds: number[],
+    isRanked: boolean,
     maxPlayers: number, // number of players in the game
     matchCategory: MatchCategory,
     matchStatus: MatchStatus,
@@ -64,6 +65,7 @@ export type SignupResponse = {
 
 export type StartMatchmakingRequest = {
     userId: number,
+    isRanked: boolean,
     maxPlayers: number,
     matchCategory: MatchCategory,
 };
