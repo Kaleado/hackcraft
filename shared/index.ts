@@ -3,7 +3,15 @@ const serverPort = 8080;
 
 const frontendPort = "TODO";
 
+export function hasKeys(obj: any, keys: string[]): boolean {
+    return keys.some((k: string) => {
+        return obj[k] == undefined;
+    });
+}
+
 export type ChallengeCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";
+
+export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 
 export type BackendError = {
     reason: string,
@@ -23,7 +31,9 @@ export type PublicUser = {
 export type Match = {
     matchId: number,
     playerIds: number[],
+    maxPlayers: number, // number of players in the game
     challengeCategory: ChallengeCategory,
+    matchStatus: MatchStatus,
 };
 
 export type LoginRequest = {
@@ -46,9 +56,16 @@ export type SignupResponse = {
 
 export type StartMatchmakingRequest = {
     userId: number,
+    maxPlayers: number,
     challengeCategory: ChallengeCategory,
 };
 
 export type StartMatchmakingResponse = {
     matchId: number // Identifies the game that you've just made.
 };
+
+export type MatchStatusRequest = {
+    matchId: number,
+};
+
+export type MatchStatusResponse = Match;
