@@ -1,4 +1,5 @@
 import express from "express";
+import { mockLogin } from "./mockLogin";
 
 // A constant port number to serve our website on
 const PORT = 8080;
@@ -11,7 +12,7 @@ App.get("/", (request, response) => {
   response.send("Hello world, it's me!");
 });
 
-
+App.post("/mocklogin", mockLogin);
 
 
 // This part should go last!
