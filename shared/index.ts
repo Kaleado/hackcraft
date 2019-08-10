@@ -11,6 +11,8 @@ export function hasKeys(obj: any, keys: string[]): boolean {
     });
 }
 
+export type Language = "python3" | "c++";
+
 export type MatchCategory = "FUNCTIONAL" | "PROCEDURAL" | "SCRIPTING" | "FREE";;
 
 export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
@@ -18,6 +20,8 @@ export type MatchStatus = "SEARCHING" | "STARTED" | "ENDED";
 export type BackendError = {
     reason: string,
 };
+
+export type ChallengeId = string;
 
 export type Challenge = {
     name: string,
@@ -82,7 +86,8 @@ export type MatchStatusRequest = {
 export type MatchStatusResponse = Match;
 
 export type GetChallengeRequest = {
-    matchId: number
+    matchId: number,
+    language: Language
 };
 
 export type GetChallengeResponse = Challenge;

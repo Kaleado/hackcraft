@@ -5,10 +5,24 @@ import {
     Match, 
     MatchStatusResponse,
     MatchStatusRequest,
-    hasKeys
+    hasKeys,
+    ChallengeId
 } from "../../shared";
 import { RedisClient } from "redis";
-import { getNextAvailableMatchId, updateNextAvailableMatchId, addMatch, getAllMatches, getMatchById } from "./db";
+import { getNextAvailableMatchId, updateNextAvailableMatchId, addMatch, getAllMatches, getMatchById, mapMatchIdToChallengeId } from "./db";
+import { chooseRandomChallenge } from "./challenge";
+
+async function joinMatch(userId: number, match: Match, dbClient: RedisClient): Promise<void> {
+    // Update the match to include us.
+    match.playerIds.push(userId);
+    if(match.playerIds.length == match.maxPlayers){
+        match.matchStatus = "STARTED";
+        // Select a challenge.
+        let challengeId: ChallengeId = chooseRandomChallenge();
+        mapMatchIdToChallengeId(dbClient, match.matchId, challengeId);
+    }
+    addMatch(dbClient, match);
+}
 
 export async function startMatchmaking(req, res, dbClient: RedisClient) : Promise<StartMatchmakingResponse | BackendError> {
     let reqBody: StartMatchmakingRequest = req.body;
@@ -25,12 +39,7 @@ export async function startMatchmaking(req, res, dbClient: RedisClient) : Promis
                m.isRanked == reqBody.isRanked;
     });
     if(joinableMatch !== undefined){
-        // Update the match to include us.
-        joinableMatch.playerIds.push(reqBody.userId);
-        if(joinableMatch.playerIds.length == joinableMatch.maxPlayers){
-            joinableMatch.matchStatus = "STARTED";
-        }
-        addMatch(dbClient, joinableMatch);
+        joinMatch(reqBody.userId, joinableMatch, dbClient);
         return {
             matchId: joinableMatch.matchId
         };
