@@ -65,7 +65,7 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
     }
 
     calcPassPercent = () => {
-        if (this.state.stderr !== "")
+        if (this.state.stderr !== "" || !this.state.stderr.match(/Exception("Failed tests")/))
             return 0;
         return 100*this.state.currentNumberTestsPassed/this.state.totalNumberTests;
     }
