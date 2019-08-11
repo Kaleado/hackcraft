@@ -1,14 +1,17 @@
-# Count the amount of adjacent duplicates
+# Nth Tribonacci Number
 
-Given a list, count the amount of adjacent duplicates in the list
+The Tribonacci sequence T_n is defined as follows:
+
+T_0 = 0, T_1 = 1, T_2 = 2, and T_n+3 = T_n + t_n+1 + T_n+2 for n >= 0.
+
+Given `n`, return the value for T_n.
 
 ## Example:
 ```
-input: [1,1,1,2,3,3]
-solution: 3
+input: 4
+solution: 4
 ```
 
 **Explanation**:
-* The first adjacent duplicates are the first pair of 1's
-* The second adjacent duplicates are the second pair of 1's
-* The last adjacent duplicates are the pair of 3's
+* T_3 = 0 + 1 + 1 = 2
+* T_4 = 1 + 1 + 2 = 4
