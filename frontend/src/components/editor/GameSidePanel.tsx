@@ -102,8 +102,8 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                             <h3>Tests passed:</h3>
                             <div className="test-progress-bar">
                                 <ProgressBar variant="success" 
-                                    now={this.state.currentNumberTestsPassed/this.state.totalNumberTests}
-                                    label={`${this.state.currentNumberTestsPassed/this.state.totalNumberTests}%`} 
+                                    now={100*this.state.currentNumberTestsPassed/this.state.totalNumberTests}
+                                    label={`${100*this.state.currentNumberTestsPassed/this.state.totalNumberTests}%`} 
                                 />
                             </div>
                             <h3 style={{ color: "green" }}>Last Test Stdout:</h3>
