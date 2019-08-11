@@ -31,6 +31,7 @@ export class DashboardContentArea extends React.Component<IDashboardContentAreaP
                     <h4>Losses: 55</h4>
                     <h4>Division: Bronze</h4>
                     <h4>Average Time: 12 minutes</h4>
+                    <h4>Characters Per Minute: 35</h4>
                 </div>
                 <div className="find-match-wrapper">
                     <button className="find-match-button btn btn-light" onClick={this.gameStart}>
