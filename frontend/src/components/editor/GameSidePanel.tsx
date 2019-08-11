@@ -54,7 +54,7 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
 
                 this.props.runTests(data => {
                     this.setState({
-                        currentNumberTestsPassed: data.testsFailed,
+                        currentNumberTestsPassed: parseInt((data.testsTotal as unknown) as string) - parseInt((data.testsFailed as unknown) as string),
                         totalNumberTests: data.testsTotal,
                         stderr: data.stderr,
                         stdout: data.stdout
@@ -65,8 +65,10 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
     }
 
     calcPassPercent = () => {
-        if (this.state.stderr !== "" || !this.state.stderr.match(/Exception("Failed tests")/))
+        if (this.state.stderr !== "" && (this.state.stderr.match(/Exception\("Failed tests"\)/) === null))
             return 0;
+
+        console.log(this.state);
         return 100*this.state.currentNumberTestsPassed/this.state.totalNumberTests;
     }
 
@@ -109,7 +111,7 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                             <div className="test-progress-bar">
                                 <ProgressBar variant="success" 
                                     now={this.calcPassPercent()}
-                                    label={`${this.calcPassPercent()}%`} 
+                                    label={`${Math.round(this.calcPassPercent())}%`} 
                                 />
                             </div>
                             <h3 style={{ color: "green" }}>Last Test Stdout:</h3>
