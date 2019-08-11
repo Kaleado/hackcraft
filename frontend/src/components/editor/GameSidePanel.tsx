@@ -64,6 +64,12 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
         >Run Tests</button>
     }
 
+    calcPassPercent = () => {
+        if (this.state.stderr !== "")
+            return 0;
+        return 100*this.state.currentNumberTestsPassed/this.state.totalNumberTests;
+    }
+
     getChallengeMd = () => {
         let body: Globals.GetChallengeRequest = {
             matchId: this.props.matchId,
@@ -102,8 +108,8 @@ export class GameSidePanel extends React.Component<IGameSidePanelProps, IGameSid
                             <h3>Tests passed:</h3>
                             <div className="test-progress-bar">
                                 <ProgressBar variant="success" 
-                                    now={100*this.state.currentNumberTestsPassed/this.state.totalNumberTests}
-                                    label={`${100*this.state.currentNumberTestsPassed/this.state.totalNumberTests}%`} 
+                                    now={this.calcPassPercent()}
+                                    label={`${this.calcPassPercent()}%`} 
                                 />
                             </div>
                             <h3 style={{ color: "green" }}>Last Test Stdout:</h3>
